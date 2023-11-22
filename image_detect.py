@@ -1,17 +1,8 @@
 import cv2
 import numpy as np
-from matplotlib import pyplot as plt
-import argparse
 def split_image(img):
-    # 读取图像数据
-
-    # 获取图像的高度和宽度
     height, width, _ = img.shape
-
-    # 计算中心线的位置
     center_line = width // 2
-
-    # 将图像分为两部分
     img1 = img[:, :center_line, :]
     img2 = img[:, center_line:, :]
 
@@ -68,18 +59,12 @@ def merge_overlapping_rectangles(rectangles):
     return [rect for i, rect in enumerate(rectangles) if flags[i] == 0]
 
 def matchAB(imgA, imgB):
-    # 读取图像数据
     global max, min
 
-
-    # 转换成灰色
     grayA = cv2.cvtColor(imgA, cv2.COLOR_BGR2GRAY)
     grayB = cv2.cvtColor(imgB, cv2.COLOR_BGR2GRAY)
 
-    # 获取图片A的大小
     height, width = grayA.shape
-    print(height,width)
-    # 取局部图像，寻找匹配位置
     window_size = 600
     result_window = np.zeros((height, width), dtype=imgA.dtype)
     for start_y in range(0, height-window_size, height//10):
@@ -91,7 +76,6 @@ def matchAB(imgA, imgB):
             result = cv2.absdiff(window, matched_window)
             result_window[start_y:start_y + window_size, start_x:start_x + window_size] = result
         print(start_y)
-    # 用四边形圈出不同部分
     _, result_window_bin = cv2.threshold(result_window, 45, 255, cv2.THRESH_BINARY)
     contours, _ = cv2.findContours(result_window_bin, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     imgC = imgA.copy()
