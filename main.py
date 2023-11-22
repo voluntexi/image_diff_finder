@@ -3,8 +3,6 @@ import cv2
 import numpy as np
 import image_detect
 def process_image(input_image):
-    # 这里可以加入你的图像处理代码
-    # 作为示例，这里只是将图像转换为灰度图
     img = image_detect.start(input_image)
 
     return img
